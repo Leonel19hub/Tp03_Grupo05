@@ -1,0 +1,49 @@
+@charset "ISO-8859-1";
+
+body{
+    /* background:url("/img/fondo.jpg"); */
+    /* background:url("../img/fondo.jpg"); */
+    background:url("../img/fondo2.jpg");
+    background-size: cover;
+    /* background-repeat: repeat-x;
+    background-position: 0 0; */
+}
+
+.container{
+    padding: 20px;
+    /* padding: 100px 100px 100px 100px; */
+    margin: 30px auto;
+    width: 1100px;
+    height: 550px;
+    border:3px solid #fff;
+    border-radius: 40px;
+    color: #fff;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: rgba(0, 0, 0, 0.583);
+    /* border-color: red; */
+}
+
+.cuerpo{
+    display: flex;
+    font-size: 20px;
+    /* flex-flow: column wrap; */
+    /* flex-direction: column; */
+    /* justify-content: space-around; */
+    border: 3px solid #fff;
+    border-radius: 30px;
+    padding-left: 15px;
+    background-color: rgba(0, 0, 0, 0.481);
+    margin-bottom: 30px;
+}
+
+#encabezado{
+    font-size: 40px;
+    color: yellow;
+    margin-bottom: 20px;
+}
+
+#formulario{
+    font-size: 20px;
+    color: #fff;
+
+}
