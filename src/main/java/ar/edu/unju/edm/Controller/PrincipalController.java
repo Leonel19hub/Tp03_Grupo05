@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PrincipalController {
 
-	@GetMapping({"/menu", "/principal", "/grupo5", "/home"})
+	@GetMapping({"/menu", "/principal", "/grupo5", "/home", "/index"})
     public String getMenu(){
-        return "principal";
+        return "index";
     }
 }
