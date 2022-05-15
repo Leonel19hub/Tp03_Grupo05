@@ -11,24 +11,32 @@
 </head>
 
 <body>
+    <div th:insert="/layout/header :: header"></div>
     <div class="container">
         
-        <div th:insert="/layout/header :: header"></div>
         <form th:object="${usuario}" th:action="@{/guardarUsuario}" method="post">
             <div class="mb-3">
+                <label for="exampleInputNombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="exampleInputNombre" th:field="*{nombre}">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputApellido" class="form-label">Apelldio</label>
+                <input type="text" class="form-control" id="exampleInputApellido" th:field="*{apellido}">
+            </div>
+            <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{email}">
                 <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" class="form-control" id="exampleInputPassword1" th:field="*{contrasenia}">
             </div>
             <button type="submit" class="btn btn-success">Guardar Usuario</button>
         </form><br>
         <a class="btn btn-success" href="/index" role="button">Volver</a>
-        <a class="btn btn-success" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" role="button">Visitar Rule34</a>
     </div>
+    <div th:insert="/layout/footer :: footer"></div>
 </body>
 
 </html>

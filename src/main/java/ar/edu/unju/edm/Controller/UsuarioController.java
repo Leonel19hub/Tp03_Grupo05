@@ -34,8 +34,18 @@ public class UsuarioController {
     public String saveUser(@ModelAttribute ("usuario") Usaurio userToSave){
 
         listadoUsuario.getListado().add(userToSave);
-        System.out.println("tamaño del listado: "+listadoUsuario.getListado().size());
+        // System.out.println("tamaño del listado: "+listadoUsuario.getListado().size());
         return "redirect:/otroUsuario";
+    }
+
+    @GetMapping("/mostrarUsurio")
+    public ModelAndView showTableUsers(){
+        
+        ModelAndView modelView = new ModelAndView("mostrarUsuarios");
+
+        modelView.addObject("listUser", listadoUsuario.getListado());
+        
+        return modelView;
     }
 
 }

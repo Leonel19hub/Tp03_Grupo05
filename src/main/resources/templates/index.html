@@ -11,16 +11,17 @@
     <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body>
+    <div th:insert="/layout/header :: header"></div>
     <div class="container">
-        <div th:insert="/layout/header :: header"></div>
         
         <div class="cuerpo">
             <nav class=" col-6 col-xl-2">menu</nav>
             <article class="col-6 col-xl-10">Cuerpo de la pagina</article>
         </div>
         <a class="btn btn-success" href="/otroUsuario" role="button">Nuevo Usuario</a>
-        <footer>Pie de pagina</footer>
+        
     </div>
 
+    <div th:insert="/layout/footer :: footer"></div>
 </body>
 </html>

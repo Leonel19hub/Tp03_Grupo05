@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  th:href="@{/css/style.css}" type="text/css">
+    <link rel="stylesheet" href="" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}" type="text/css">
+    <title>Mostrar Usuario</title>
+</head>
+<body>
+    <style>
+        table{
+            margin: 40px auto;
+        }
+
+        th{
+            padding: 15px;
+            border: 3px solid green;
+            color: #fff;
+        }
+    </style>
+
+    <div th:insert="/layout/header :: header"></div>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo Electronico</th>
+                <th>Contrseña</th>
+            </tr>
+            <tr th:each = "usr:${listUser}">
+                <th th:text = "${usr.nombre}"></th>
+                <th th:text = "${usr.apellido}"></th>
+                <th th:text = "${usr.email}"></th>
+                <th th:text = "${usr.contrasenia}"></th>
+            </tr>
+        </table>
+    </div>
+    
+    <div th:insert="/layout/footer :: footer"></div>
+
+</body>
+</html>
