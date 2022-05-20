@@ -1,7 +1,14 @@
 package ar.edu.unju.edm.Controller;
 
+import javax.validation.Valid;
+
+// import org.apache.commons.logging.Log;
+// import org.apache.juli.log;
+import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +19,9 @@ import ar.edu.unju.edm.until.ListadoUsuario;
 
 @Controller
 public class UsuarioController {
+
+    // Constanres con mayusculas
+    private static final org.apache.juli.logging.Log MARCOS = LogFactory.getLog(UsuarioController.class);
 
     @Autowired
     Usaurio nuevoUsuario;
@@ -31,10 +41,17 @@ public class UsuarioController {
     ListadoUsuario listadoUsuario;
 
     @PostMapping("/guardarUsuario")
-    public String saveUser(@ModelAttribute ("usuario") Usaurio userToSave){
+    public String saveUser(@Valid @ModelAttribute ("usuario") Usaurio userToSave, BindingResult resultado, Model model){
 
+        // MARCOS.info("ingresando al metodo guardar Usuario: "+userToSave.getApellido());
+        if(resultado.hasErrors()){
+            MARCOS.fatal("Error de validadcion");
+            // model.addAllAttributes("usuario", userToSave);
+            model.addAttribute("usuario", userToSave);
+            return "cargarUsuario";
+        }
         listadoUsuario.getListado().add(userToSave);
-        // System.out.println("tamaño del listado: "+listadoUsuario.getListado().size());
+        // MARCOS.error("tamaño del listado: "+listadoUsuario.getListado().size());
         return "redirect:/otroUsuario";
     }
 
