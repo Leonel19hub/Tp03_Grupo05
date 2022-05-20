@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,7 +35,10 @@ public class UsuarioController {
 
         modelView.addObject("usuario", nuevoUsuario);
 
+        
+        modelView.addObject("band", false);
         return modelView;
+
     }
 
     @Autowired
@@ -64,5 +68,58 @@ public class UsuarioController {
         
         return modelView;
     }
+
+    @GetMapping("/editUser/{dni}")
+    public ModelAndView editarUsuario(@PathVariable (name = "dni") Long dni){
+
+        Usaurio usuarioEncontrado = new Usaurio();
+        // nuevoUsuario usuarioEncontrado;
+
+        for(int i=0;i<listadoUsuario.getListado().size();i++){
+            if(listadoUsuario.getListado().get(i).getDni().equals(dni)){
+                usuarioEncontrado = listadoUsuario.getListado().get(i);
+            }
+        }
+        
+        ModelAndView encontrado = new ModelAndView("cargarUsuario");
+
+        encontrado.addObject("listUser", usuarioEncontrado);
+        encontrado.addObject("band", true);
+        
+        return encontrado;
+    }
+
+    @PostMapping("/modificarUsuario")
+    public String modificarUser(@Valid @ModelAttribute ("usuario") Usaurio userToEdit, BindingResult resultado, Model model){
+
+        // MARCOS.info("ingresando al metodo guardar Usuario: "+userToSave.getApellido());
+        if(resultado.hasErrors()){
+            MARCOS.fatal("Error de validadcion");
+            model.addAttribute("usuario", userToEdit);
+            return "cargarUsuario";
+        }
+
+        for(int i=0;i<listadoUsuario.getListado().size();i++){
+            if(listadoUsuario.getListado().get(i).getDni().equals(userToEdit.getDni())){
+                listadoUsuario.getListado().set(1, userToEdit);
+            }
+        }
+        // listadoUsuario.getListado().add(userToEdit);
+        // MARCOS.error("tamaño del listado: "+listadoUsuario.getListado().size());
+        return "redirect:/mostrarUsuarios";
+    }
+
+    @GetMapping("/deleteUser")
+    public ModelAndView eliminarUsuario(@PathVariable (name = "dni") Long dni){
+        
+        ModelAndView modelView = new ModelAndView("mostrarUsuarios");
+
+        modelView.addObject("listUser", listadoUsuario.getListado());
+        
+        return modelView;
+    }
+
+    
+
 
 }

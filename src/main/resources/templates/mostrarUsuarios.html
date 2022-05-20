@@ -14,6 +14,8 @@
     <style>
         table {
             margin: 40px auto;
+            align-items: center;
+            text-align: center;
         }
 
         th {
@@ -40,17 +42,22 @@
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Correo Electronico</th>
-                <th>Contrseña</th>
+                <!-- <th>Contrseña</th> -->
                 <th>DNI</th>
                 <th>Fecha de Nacimiento</th>
+                <th>Edicion</th>
             </tr>
             <tr th:each="usr:${listUser}">
                 <th th:text="${usr.nombre}"></th>
                 <th th:text="${usr.apellido}"></th>
                 <th th:text="${usr.email}"></th>
-                <th th:text="${usr.contrasenia}"></th>
+                <!-- <th th:text="${usr.contrasenia}"></th> -->
                 <th th:text="${usr.dni}"></th>
                 <th th:text="${usr.fechanac}"></th>
+                <th>
+                    <a href="" class="btn btn-warning" th:href="@{'/editUser/' + ${usr.dni}}">Editar</a>
+                    <a href="" class="btn btn-danger" th:href="@{'/deleteUser/' + ${usr.dni}}">Borrar</a>
+                </th>
             </tr>
         </table>
     </div>

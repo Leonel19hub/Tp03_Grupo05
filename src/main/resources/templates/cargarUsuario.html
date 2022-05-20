@@ -14,7 +14,7 @@
     <div th:insert="/layout/header :: header"></div>
     <div class="container">
 
-        <form th:object="${usuario}" th:action="@{/guardarUsuario}" method="post">
+        <form th:object="${usuario}" th:action="${band} ? @{/modificarUsuario} : @{/guardarUsuario}" method="post">
             <div class="mb-3">
                 <label for="exampleInputNombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="exampleInputNombre" th:field="*{nombre}" autocomplete="off">
@@ -44,7 +44,7 @@
                 <label for="fechanac" class="form-label">Fecha de Nacimiento</label>
                 <input type="date" class="form-control" id="fechanac" th:field="*{fechanac}" placeholder="Ingrese Fecha de Nacimiento">
             </div>
-            <button type="submit" class="btn btn-success">Guardar Usuario</button>
+            <button type="submit" class="btn btn-success" th:value="${band} ? 'Modificar' : 'Registarse'">Registarse</button>
         </form><br>
         <a class="btn btn-success" href="/index" role="button">Volver</a>
     </div>
