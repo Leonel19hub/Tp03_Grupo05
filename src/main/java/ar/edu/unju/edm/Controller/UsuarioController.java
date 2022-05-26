@@ -2,6 +2,7 @@ package ar.edu.unju.edm.Controller;
 
 import javax.validation.Valid;
 
+import org.apache.commons.logging.Log;
 // import org.apache.commons.logging.Log;
 // import org.apache.juli.log;
 import org.apache.juli.logging.LogFactory;
@@ -23,6 +24,8 @@ public class UsuarioController {
 
     // Constanres con mayusculas
     private static final org.apache.juli.logging.Log MARCOS = LogFactory.getLog(UsuarioController.class);
+    // private static final Log MARCOS=LogFactory.getLog(UsuarioController.class);
+    // private static final Log MARCOS = (Log) LogFactory.getLog(UsuarioController.class);
 
     @Autowired
     Usaurio nuevoUsuario;
@@ -83,7 +86,8 @@ public class UsuarioController {
         
         ModelAndView encontrado = new ModelAndView("cargarUsuario");
 
-        encontrado.addObject("listUser", usuarioEncontrado);
+        // encontrado.addObject("listUser", usuarioEncontrado);
+        encontrado.addObject("usuario", usuarioEncontrado);
         encontrado.addObject("band", true);
         
         return encontrado;
@@ -92,9 +96,9 @@ public class UsuarioController {
     @PostMapping("/modificarUsuario")
     public String modificarUser(@Valid @ModelAttribute ("usuario") Usaurio userToEdit, BindingResult resultado, Model model){
 
-        // MARCOS.info("ingresando al metodo guardar Usuario: "+userToSave.getApellido());
+        // MARCOS.info("ingresando al metodo guardar Usuario: "+userToEdit.getApellido());
         if(resultado.hasErrors()){
-            MARCOS.fatal("Error de validadcion");
+            // MARCOS.fatal("Error de validadcion");
             model.addAttribute("usuario", userToEdit);
             return "cargarUsuario";
         }
@@ -109,9 +113,11 @@ public class UsuarioController {
         return "redirect:/mostrarUsuarios";
     }
 
-    @GetMapping("/deleteUser")
-    public ModelAndView eliminarUsuario(@PathVariable (name = "dni") Long dni){
+    @GetMapping("/deleteUser/{dni}")
+    public ModelAndView eliminarUsuario(@Valid @ModelAttribute ("usuario") Usaurio usuarioParaSacar, BindingResult resultado, Model model){
         
+        Usaurio usuarioEncontrado = new Usaurio();
+
         ModelAndView modelView = new ModelAndView("mostrarUsuarios");
 
         modelView.addObject("listUser", listadoUsuario.getListado());
