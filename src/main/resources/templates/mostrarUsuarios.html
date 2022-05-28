@@ -69,7 +69,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar el Usuaro</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -88,9 +88,9 @@
 
 </body>
 
-    <script th:src="@{/webjars/popper.js/1.16.0/popper.min.js}" src="webjars/popper.js/1.16.0/popper.min.js"></script>
+    <!-- <script th:src="@{/webjars/popper.js/1.16.0/popper.min.js}" src="webjars/popper.js/1.16.0/popper.min.js"></script> -->
 
-    <script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.jquery}" type="text/jquery" src="webjars/bootstrap/5.0.0/jquery/bootstrap.min.jquery"></script>
+    <script th:src="@{/webjars/jquery/3.5.1/js/jquery.min.js}" type="text/javascript" src="webjars/jquery/3.5.1/jquery/jquery.min.js"></script>
 
     <script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.js}" type="text/javascript" src="webjars/bootstrap/5.0.0/js/bootstrap.min.js"></script>
 
@@ -98,6 +98,11 @@
         function confirmarEliminar(dni){
             $('#modalEliminar').modal('show');
             $("#identificadorDeUsuario").val(dni);
+        }
+
+        function eliminarUsuario(){
+            var id = $("#identificadorDeUsuario").val();
+            window.location="/eliminarUsuario/"+id;
         }
     </script>
 

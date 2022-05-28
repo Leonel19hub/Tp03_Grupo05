@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.unju.edm.model.Usaurio;
+import ar.edu.unju.edm.services.IUsuarioService;
 import ar.edu.unju.edm.until.ListadoUsuario;
 
 @Controller
@@ -29,6 +30,9 @@ public class UsuarioController {
 
     @Autowired
     Usaurio nuevoUsuario;
+
+    @Autowired
+    IUsuarioService serviceUsuario;
 
     @GetMapping("/otroUsuario")
     public ModelAndView addUser(){
@@ -44,8 +48,7 @@ public class UsuarioController {
 
     }
 
-    @Autowired
-    ListadoUsuario listadoUsuario;
+    
 
     @PostMapping("/guardarUsuario")
     public String saveUser(@Valid @ModelAttribute ("usuario") Usaurio userToSave, BindingResult resultado, Model model){
@@ -53,12 +56,16 @@ public class UsuarioController {
         // MARCOS.info("ingresando al metodo guardar Usuario: "+userToSave.getApellido());
         if(resultado.hasErrors()){
             MARCOS.fatal("Error de validadcion");
-            // model.addAllAttributes("usuario", userToSave);
             model.addAttribute("usuario", userToSave);
             return "cargarUsuario";
         }
-        listadoUsuario.getListado().add(userToSave);
-        // MARCOS.error("tamaño del listado: "+listadoUsuario.getListado().size());
+
+        try {
+            serviceUsuario.guardarUsuario(userToSave);
+        } catch (Exception e) {
+            MARCOS.error("no se pudo guardar usuario");
+        }
+
         return "redirect:/otroUsuario";
     }
 
@@ -67,7 +74,7 @@ public class UsuarioController {
         
         ModelAndView modelView = new ModelAndView("mostrarUsuarios");
 
-        modelView.addObject("listUser", listadoUsuario.getListado());
+        modelView.addObject("listUser", serviceUsuario.mostrarUsuarios());
         
         return modelView;
     }
@@ -114,15 +121,16 @@ public class UsuarioController {
     }
 
     @GetMapping("/deleteUser/{dni}")
-    public ModelAndView eliminarUsuario(@Valid @ModelAttribute ("usuario") Usaurio usuarioParaSacar, BindingResult resultado, Model model){
-        
-        Usaurio usuarioEncontrado = new Usaurio();
+    public String eliminarUsuario(@Valid @ModelAttribute Long dni){
 
-        ModelAndView modelView = new ModelAndView("mostrarUsuarios");
-
-        modelView.addObject("listUser", listadoUsuario.getListado());
+        try {
+            
+            serviceUsuario.eliminarUsuario(dni);
+        } catch (Exception e) {
+            MARCOS.error("no se pdo eliminar el usuario");
+        }
         
-        return modelView;
+        return "redirect:/mostrarUsurio";
     }
 
     
