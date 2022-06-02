@@ -1,109 +1,124 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
-    <link rel="stylesheet" href="" th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}" type="text/css">
-    <title>Mostrar Usuario</title>
+	<meta charset="UTF-8" />
+	<title>Mostrar Usuarios</title>
+
+	<link th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+	<link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" href="/static/css/style.css">
+	<link th:rel="stylesheet" th:href="@{/webjars/font-awesome/6.1.0/css/all.css}" />
 </head>
 
-<body>
-    <style>
-        table {
-            margin: 40px auto;
-            align-items: center;
-            text-align: center;
-        }
+<body class="body-usuarios-cursos">
 
-        th {
-            padding: 15px;
-            border: 3px solid rgb(52, 204, 52);
-            border-radius: 5px;
-            color: #fff;
-        }
+	<div th:insert="/layout/header :: header"></div><br>
 
-        tr td,
-        th {
-            border-top-right-radius: 10px;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-    </style>
+	<div class="container">
+		<div class="alert-danger text-center" th:if="${formUsuarioErrorMessage}" th:text="${formUsuarioErrorMessage}">
+			Name Error</div>
+		<section>
+			<div class="table-responsive">
+				<table class="table table-sm table-dark table-hover">
+					<thead>
+						<tr class="text-center">
+							<th scope="col">Nombre</th>
+							<th scope="col">Apellido</th>
+							<th scope="col">Contrasena</th>
+							<th scope="col">Email</th>
+							<th scope="col">DNI</th>
+							<th scope="col">Fecha de Nacimiento</th>
+							<th scope="col">Edicion</th>
+						</tr>
+					</thead>
+					<tbody class="table-group-divider">
 
-    <div th:insert="/layout/header :: header"></div>
+						<tr th:each="user:${listaUsuario}" class="text-center">
+							<td class="black" th:text="${user.nombre}"></td>
+							<td class="black" th:text="${user.apellido}"></td>
+							<td class="black" th:text="${user.contrasena}"></td>
+							<td class="black" th:text="${user.mail}"></td>
+							<td class="black" th:text="${user.dni}"></td>
+							<td class="black" th:text="${user.fechanac}"></td>
+							<td class="black">
+								<a class="btn btn-warning fa fa-pencil" href="#"
+									th:href="@{'/editarUsuario/'+${user.dni}}"></a>
+								<a class="link-eliminar" href="#"
+									th:onclick="'javascript:confirmarEliminar(\''+${user.dni}+'\');'">
+									<i class="btn btn-danger fa fa-trash-alt"></i></a>
+							</td>
 
-    <div class="container">
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Correo Electronico</th>
-                <!-- <th>Contrseña</th> -->
-                <th>DNI</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Edicion</th>
-            </tr>
-            <tr th:each="usr:${listUser}">
-                <th th:text="${usr.nombre}"></th>
-                <th th:text="${usr.apellido}"></th>
-                <th th:text="${usr.email}"></th>
-                <!-- <th th:text="${usr.contrasenia}"></th> -->
-                <th th:text="${usr.dni}"></th>
-                <th th:text="${usr.fechanac}"></th>
-                <th>
-                    <a href="" class="btn btn-warning" th:href="@{'/editUser/' + ${usr.dni}}">Editar</a>
-                    <a href="" class="btn btn-danger" th:onclick="'javascript:confirmarEliminar(\''+${usr.dni}+'\');'">Borrar</a>
-                    <!-- data-bs-toggle="modal" data-bs-target="#exampleModal" -->
-                    <!--  -->
-                </th>
-            </tr>
-        </table>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Eliminar el Usuaro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div th:insert="/layout/footer :: footer"></div>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</div>
 
 
+	<!-- MODAL ELIMINAR Usuario funciona con JS-->
+	<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="eliminarModal"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="eliminarModalTitulo">Confirmar Eliminar</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h6>¿Seguro quiere eliminar este Usuario?</h6>
+				</div>
+				<form>
+					<input class="form-control" type="text" id="identificadorDeUsuario" name="userIdHiddenInput" />
+
+				</form>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" th:onclick="eliminarUsuario()">Si, Borrar</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- script que envia datos -->
+	<script type="text/javascript">
+		var exampleModal = document.getElementById('modalEliminar')
+		exampleModal.addEventListener('show.bs.modal', function (event) {
+			// Button that triggered the modal
+			var button = event.relatedTarget
+			// Extract info from data-bs-* attributes
+			var recipient = button.getAttribute('data-bs-mail')
+			var recipient2 = button.getAttribute('data-bs-whatever')
+			// If necessary, you could initiate an AJAX request here
+			// and then do the updating in a callback.
+			//
+			// Update the modal's content.
+			var modalTitle = exampleModal.querySelector('.modal-title')
+			var modalBodyInput = exampleModal
+				.querySelector('.modal-body input')
+
+			modalTitle.textContent = 'Delete User ' + recipient
+			modalBodyInput.value = recipient2
+		})
+	</script>
+
+	<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" type="text/javascript"
+		src="webjars/jquery/3.6.0/jquery.min.js"></script>
+	<script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.js}" type="text/javascript"
+		src="webjars/bootstrap/5.0.0/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		function confirmarEliminar(id) {
+			$("#identificadorDeUsuario").val(id);
+			$('#modalEliminar').modal('show');
+		}
+
+		function eliminarUsuario() {
+			var id = $("#identificadorDeUsuario").val();
+			window.location = "/eliminarUsuario/" + id;
+		}
+	</script>
 </body>
-
-    <!-- <script th:src="@{/webjars/popper.js/1.16.0/popper.min.js}" src="webjars/popper.js/1.16.0/popper.min.js"></script> -->
-
-    <script th:src="@{/webjars/jquery/3.5.1/js/jquery.min.js}" type="text/javascript" src="webjars/jquery/3.5.1/jquery/jquery.min.js"></script>
-
-    <script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.js}" type="text/javascript" src="webjars/bootstrap/5.0.0/js/bootstrap.min.js"></script>
-
-    <script type="text/javascript">
-        function confirmarEliminar(dni){
-            $('#modalEliminar').modal('show');
-            $("#identificadorDeUsuario").val(dni);
-        }
-
-        function eliminarUsuario(){
-            var id = $("#identificadorDeUsuario").val();
-            window.location="/eliminarUsuario/"+id;
-        }
-    </script>
 
 </html>
