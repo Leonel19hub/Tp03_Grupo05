@@ -5,110 +5,83 @@ import java.time.LocalDate;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Usuario {
-
+    
     private String nombre;
-    private String apellido;
-    private String email;
-    @NotEmpty
-    private String contrasenia;
-    private Boolean estado;
-    @NotNull
-    @Min(value=10000000, message="DNI NO VALIDO: {x/x ∈ Z x > 10.000.000}")
-    @Max(value=100000000, message="DNI NO VALIDO: {x/x ∈ Z x < 99.999.999}")
-    private Long dni;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechanac;
+	@NotEmpty(message = "Este campo no puede estar vacio")
+	private String apellido;
+	@NotEmpty(message = "La contrasela no puede estar vacia")
+	private String contrasena;
+	private String mail;
+	@Max (value = 99999999, message="DNI NO VALIDO: {x/x ∈ Z 1.000.000 < x < 99.999.999}")
+	@Min (value = 1000000, message="DNI NO VALIDO: {x/x ∈ Z 1.000.000 < x < 99.999.999}")
+	private Integer dni;
+	private Boolean estado;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate fechanac;
 
     public Usuario() {
-    }
+		// TODO Auto-generated constructor stub
+	}
 
-    public Usuario(String nombre, String apellido, String email, @NotEmpty String contrasenia, Boolean estado,
-            @Min(value = 10000000, message = "DNI NO VALIDO: {x/x ∈ Z x > 10.000.000}") @Max(value = 99999999, message = "DNI NO VALIDO: {x/x ∈ Z x < 99.999.999}") Long dni,
-            LocalDate fechanac) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.contrasenia = contrasenia;
-        this.estado = estado;
-        this.dni = dni;
-        this.fechanac = fechanac;
-    }
+	public String getMail() {
+		return mail;
+	}
 
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
 
+	public String getContrasena() {
+		return contrasena;
+	}
 
-    public Usuario(String nombre, String apellido, String email, String contrasenia) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.contrasenia = contrasenia;
-    }
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
 
-    public String getNombre() {
-        return nombre;
-    }
+	public String getApellido() {
+		return apellido;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
 
-    public String getApellido() {
-        return apellido;
-    }
+	public Integer getDni() {
+		return dni;
+	}
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+	public void setDni(Integer dni) {
+		this.dni = dni;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public Boolean getEstado() {
+		return estado;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
 
-    public String getContrasenia() {
-        return contrasenia;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
+	public LocalDate getFechanac() {
+		return fechanac;
+	}
 
-
-    public Boolean getEstado() {
-        return estado;
-    }
-
-
-
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
-    }
-
-
-
-    public Long getDni() {
-        return dni;
-    }
-
-    public void setDni(Long dni) {
-        this.dni = dni;
-    }
-
-    public LocalDate getFechanac() {
-        return fechanac;
-    }
-
-    public void setFechanac(LocalDate fechanac) {
-        this.fechanac = fechanac;
-    }    
+	public void setFechanac(LocalDate fechanac) {
+		this.fechanac = fechanac;
+	}	
 }
