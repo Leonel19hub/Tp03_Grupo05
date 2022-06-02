@@ -1,28 +1,28 @@
-package ar.edu.unju.edm.until;
+package ar.edu.unju.edm.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import ar.edu.unju.edm.model.Usaurio;
+import ar.edu.unju.edm.model.Usuario;
 
 @Component
 public class ListadoUsuario {
-    private List<Usaurio> listado = new ArrayList<>();
+    private List<Usuario> listado = new ArrayList<>();
 
     public ListadoUsuario() {
     }
 
-    public ListadoUsuario(List<Usaurio> listado) {
+    public ListadoUsuario(List<Usuario> listado) {
         this.listado = listado;
     }
 
-    public List<Usaurio> getListado() {
+    public List<Usuario> getListado() {
         return listado;
     }
 
-    public void setListado(List<Usaurio> listado) {
+    public void setListado(List<Usuario> listado) {
         this.listado = listado;
     }
 

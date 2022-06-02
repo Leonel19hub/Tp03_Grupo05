@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Usaurio {
+public class Usuario {
 
     private String nombre;
     private String apellido;
@@ -26,10 +26,10 @@ public class Usaurio {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechanac;
 
-    public Usaurio() {
+    public Usuario() {
     }
 
-    public Usaurio(String nombre, String apellido, String email, @NotEmpty String contrasenia, Boolean estado,
+    public Usuario(String nombre, String apellido, String email, @NotEmpty String contrasenia, Boolean estado,
             @Min(value = 10000000, message = "DNI NO VALIDO: {x/x ∈ Z x > 10.000.000}") @Max(value = 99999999, message = "DNI NO VALIDO: {x/x ∈ Z x < 99.999.999}") Long dni,
             LocalDate fechanac) {
         this.nombre = nombre;
@@ -43,7 +43,7 @@ public class Usaurio {
 
 
 
-    public Usaurio(String nombre, String apellido, String email, String contrasenia) {
+    public Usuario(String nombre, String apellido, String email, String contrasenia) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;

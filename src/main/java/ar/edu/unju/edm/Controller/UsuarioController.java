@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.unju.edm.model.Usaurio;
+import ar.edu.unju.edm.model.Usuario;
 import ar.edu.unju.edm.services.IUsuarioService;
-import ar.edu.unju.edm.until.ListadoUsuario;
+import ar.edu.unju.edm.util.ListadoUsuario;
 
 @Controller
 public class UsuarioController {
@@ -29,7 +29,7 @@ public class UsuarioController {
     // private static final Log MARCOS = (Log) LogFactory.getLog(UsuarioController.class);
 
     @Autowired
-    Usaurio nuevoUsuario;
+    Usuario nuevoUsuario;
 
     @Autowired
     IUsuarioService serviceUsuario;
@@ -51,7 +51,7 @@ public class UsuarioController {
     
 
     @PostMapping("/guardarUsuario")
-    public String saveUser(@Valid @ModelAttribute ("usuario") Usaurio userToSave, BindingResult resultado, Model model){
+    public String saveUser(@Valid @ModelAttribute ("usuario") Usuario userToSave, BindingResult resultado, Model model){
 
         // MARCOS.info("ingresando al metodo guardar Usuario: "+userToSave.getApellido());
         if(resultado.hasErrors()){
@@ -69,7 +69,7 @@ public class UsuarioController {
         return "redirect:/otroUsuario";
     }
 
-    @GetMapping("/mostrarUsurio")
+    @GetMapping("/mostrarUsuario")
     public ModelAndView showTableUsers(){
         
         ModelAndView modelView = new ModelAndView("mostrarUsuarios");
@@ -82,14 +82,14 @@ public class UsuarioController {
     @GetMapping("/editUser/{dni}")
     public ModelAndView editarUsuario(@PathVariable (name = "dni") Long dni){
 
-        Usaurio usuarioEncontrado = new Usaurio();
+        Usuario usuarioEncontrado = new Usuario();
         // nuevoUsuario usuarioEncontrado;
 
-        for(int i=0;i<listadoUsuario.getListado().size();i++){
-            if(listadoUsuario.getListado().get(i).getDni().equals(dni)){
-                usuarioEncontrado = listadoUsuario.getListado().get(i);
-            }
-        }
+        // for(int i=0;i<listadoUsuario.getListado().size();i++){
+        //     if(listadoUsuario.getListado().get(i).getDni().equals(dni)){
+        //         usuarioEncontrado = listadoUsuario.getListado().get(i);
+        //     }
+        // }
         
         ModelAndView encontrado = new ModelAndView("cargarUsuario");
 
@@ -101,7 +101,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/modificarUsuario")
-    public String modificarUser(@Valid @ModelAttribute ("usuario") Usaurio userToEdit, BindingResult resultado, Model model){
+    public String modificarUser(@Valid @ModelAttribute ("usuario") Usuario userToEdit, BindingResult resultado, Model model){
 
         // MARCOS.info("ingresando al metodo guardar Usuario: "+userToEdit.getApellido());
         if(resultado.hasErrors()){
@@ -110,11 +110,7 @@ public class UsuarioController {
             return "cargarUsuario";
         }
 
-        for(int i=0;i<listadoUsuario.getListado().size();i++){
-            if(listadoUsuario.getListado().get(i).getDni().equals(userToEdit.getDni())){
-                listadoUsuario.getListado().set(1, userToEdit);
-            }
-        }
+        
         // listadoUsuario.getListado().add(userToEdit);
         // MARCOS.error("tamaño del listado: "+listadoUsuario.getListado().size());
         return "redirect:/mostrarUsuarios";
@@ -130,7 +126,7 @@ public class UsuarioController {
             MARCOS.error("no se pdo eliminar el usuario");
         }
         
-        return "redirect:/mostrarUsurio";
+        return "redirect:/mostrarUsuario";
     }
 
     
