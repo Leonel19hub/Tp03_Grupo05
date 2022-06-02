@@ -1,27 +1,108 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tp 02 - Grupo 05</title>
-    <link rel="stylesheet"  th:href="@{/css/style.css}" type="text/css">
-    <link rel="stylesheet" href="" th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}" type="text/css">
-    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>TP 03 - GRUPO 05</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link th:rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 </head>
+
 <body>
+
     <div th:insert="/layout/header :: header"></div>
-    <div class="container">
-        
-        <div class="cuerpo">
-            <nav class=" col-6 col-xl-2">menu</nav>
-            <article class="col-6 col-xl-10">Cuerpo de la pagina</article>
+
+    <main>
+        <div class="album py-5 bg-light">
+            <div class="container album">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="../static/img/portada-cursos/curso1.jpg" th:src="@{img/curso1.jpg}"
+                                class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Angular: De cero a experto</h5>
+                                <p class="card-text text-muted">Fernando Herrera</p>
+                                <h4 class="h5">84,99 US$</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="../static/img/portada-cursos/curso2.jpg" th:src="@{img/curso2.jpg}"
+                                class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Máster Completo en Java de cero a experto 2022 (+127 hrs)</h5>
+                                <p class="card-text text-muted">Andes Jose Guzman</p>
+                                <h4 class="h5">19,99 US$</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="../static/img/portada-cursos/curso3.jpg" th:src="@{img/curso3.jpg}"
+                                class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Fundamentos de Programación</h5>
+                                <p class="card-text text-muted">Jose Javier Villena</p>
+                                <h4 class="h5">84,99 US$</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="../static/img/portada-cursos/curso4.jpg" th:src="@{img/curso4.jpg}"
+                                class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Aprende Programación en Python</h5>
+                                <p class="card-text text-muted">Alejandro Miguel Taboada Sanchez</p>
+                                <h4 class="h5">19,99 US$</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="../static/img/portada-cursos/curso5.jpg" th:src="@{img/curso5.jpg}"
+                                class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">PACK de Desarrollo Web Front-End [HTML,CSS,LESS,JS,JQ,VUE]</h5>
+                                <p class="card-text text-muted">Daniel Fernandez Velazquez</p>
+                                <h4 class="h5">74,99 US$</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="../static/img/portada-cursos/curso6.jpg" th:src="@{img/curso6.jpg}"
+                                class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Iníciate como Full Stack Developer con Spring Boot y React</h5>
+                                <p class="card-text text-muted">Freddy Aguilar Rojas</p>
+                                <h4 class="h5">39,99 US$</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <a class="btn btn-success" href="/otroUsuario" role="button">Nuevo Usuario</a>
-        
-    </div>
+    </main>
 
     <div th:insert="/layout/footer :: footer"></div>
+
+    <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script th:src="@{/webjars/jquery/3.5.1/js/jquery.min.js}" type="text/javascript"
+        src="webjars/jquery/3.5.1/jquery/jquery.min.js">
+    </script>
+    <script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.js}" type="text/javascript"
+        src="webjars/bootstrap/5.0.0/js/bootstrap.min.js">
+    </script>
+
 </body>
+
 </html>
