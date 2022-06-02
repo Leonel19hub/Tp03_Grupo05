@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Subir Curso</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link th:rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}">
+</head>
+
+<body class="body-usuarios-cursos">
+    <div th:insert="/layout/header :: header"></div>
+    <br>
+    <div class="container">
+        <div class="alert alert-success alert-dismissible fade show row" role="alert"
+            th:if="${formCourseErrorMessage}">
+            <label th:text="${formCourseErrorMessage}"></label>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <main>
+        <div>
+            <div class="col-md-7 col-lg-8 center">
+                <form class="upload-User-Course" th:object="${unCurso}"
+                    th:action="${band}? @{/editarCurso/}:@{/guardarCurso}" method="post">
+                    <!-- <input type="hidden" class="form-control" th:if="${band}" th:field="*{contrasena}"> -->
+                    <input type="hidden" class="form-control" th:if="${band}" th:field="*{estado}">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="nombreID" class="form-label">Nombre del Curso</label>
+                            <input th:field="*{nombre}" type="text" class="form-control" id="nombreID">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="descripcionID" class="form-label">Descripcion</label>
+                            <input th:field="*{descripcion}" type="text" class="form-control" id="descripcionID">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="fechainicioID" class="form-label">Fecha de Inicio</label>
+                            <input th:field="*{fechaInicio}" type="date" class="form-control" id="fechainicioID">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="costoID" class="form-label">Precio ($)</label>
+                            <input th:field="*{precio}" type="number" class="form-control" id="costoID">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="valoracionID" class="form-label">Valoracion</label>
+                            <input th:field="*{valoracion}" type="number" class="form-control" id="valoracionID">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('valoracion')}" th:errors="*{valoracion}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="duracionID" class="form-label">Duracion</label>
+                            <input th:field="*{duracion}" type="number" class="form-control" id="duracionID" >
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('duracion')}" th:errors="*{duracion}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="docenteID" class="form-label">Docente</label>
+                            <input th:field="*{docente}" type="text" class="form-control" id="docenteID">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('docente')}" th:errors="*{docente}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="cupoID" class="form-label">Cupo</label>
+                            <input th:field="*{cupo}" type="number" class="form-control" id="cupoID">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('cupo')}" th:errors="*{cupo}"></div>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary"><span th:text="${band}? 'Modificar' : 'Guardar'"></span></button>
+                    <a class="btn btn-light" th:href="@{/}">Volver</a>
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+<script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.js}"
+		type="text/javascript"
+		src="webjars/bootstrap/5.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
