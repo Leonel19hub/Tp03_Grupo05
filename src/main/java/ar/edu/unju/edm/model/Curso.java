@@ -2,6 +2,11 @@ package ar.edu.unju.edm.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -13,12 +18,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
 public class Curso {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotEmpty(message = "El nombre no puede estar en vacio")
     private String nombre;
     @Size(min = 0 ,max = 200, message = "No debe superar los 200 caracteres")
     @NotEmpty(message = "Escriba una breve descripcion del curso")
+    @Column(name = "Descripcion")
     private String descripcion;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
