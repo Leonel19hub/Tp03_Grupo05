@@ -1,65 +1,76 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
-    <link rel="stylesheet" href="" th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}" type="text/css">
     <title>Cargar Usuario</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link th:rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}">
 </head>
 
-<body>
+<body class="body-usuarios-cursos">
+
     <div th:insert="/layout/header :: header"></div>
+    <br>
     <div class="container">
-
-        <form th:object="${usuario}" th:action="${band} ? @{/modificarUsuario} : @{/guardarUsuario}" method="post">
-            <div class="mb-3">
-                <label for="exampleInputNombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="exampleInputNombre" th:field="*{nombre}" autocomplete="off">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputApellido" class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="exampleInputApellido" th:field="*{apellido}" autocomplete="off">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    th:field="*{email}" autocomplete="off">
-                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" th:field="*{contrasenia}">
-                <!-- <i class="fa-solid fa-eye"></i> -->
-                <div class="alert alert-danger" th:if="${#fields.hasErrors('contrasenia')}" th:errors="*{contrasenia}"></div>
-            </div>
-            <div class="mb-3">
-                <label for="Dni" class="form-label">DNI</label>
-                <input type="number" class="form-control" id="Dni" th:field="*{dni}" placeholder="Ingrese DNI">
-                <div class="alert alert-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
-            </div>
-            <div class="mb-3">
-                <label for="fechanac" class="form-label">Fecha de Nacimiento</label>
-                <input type="date" class="form-control" id="fechanac" th:field="*{fechanac}" placeholder="Ingrese Fecha de Nacimiento">
-            </div>
-            <button type="submit" class="btn btn-success" th:value="${band} ? 'Modificar' : 'Registarse'">Registarse</button>
-        </form><br>
-        <a class="btn btn-success" href="/index" role="button">Volver</a>
+        <div class="alert alert-success alert-dismissible fade show row" role="alert"
+            th:if="${formUsuarioErrorMessage}">
+            <label th:text="${formUsuarioErrorMessage}"></label>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
-    <div th:insert="/layout/footer :: footer"></div>
+    <main>
+        <div>
+            <div class="col-md-7 col-lg-8 center">
+                <form class="upload-User-Course" th:object="${unUsuario}"
+                    th:action="${band}?@{/editarUsuario}:@{/guardarUsuario}" method="post">
+                    <input type="hidden" class="form-control" th:if="${band}" th:field="*{contrasena}">
+                    <input type="hidden" class="form-control" th:if="${band}" th:field="*{estado}">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" th:field="*{nombre}">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="apellido" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="apellido" th:field="*{apellido}">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+                        </div>
+                        <div class="col-6">
+                            <label for="mail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="mail" placeholder="you@example.com"
+                                th:field="*{mail}">
+                        </div>
+                        <div class="col-6" th:if="${band == false}">
+                            <!-- dentro del div    th:if="${band == false}" -->
+                            <label for="contraseña" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="contraseña"
+                                placeholder="Ingrese su contraseña" th:field="*{contrasena}">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="dni" class="form-label">DNI</label>
+                            <input type="number" class="form-control" id="dni" placeholder="12345678" th:field="*{dni}">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="fechnac" class="form-label">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" id="fechanac" th:field="*{fechanac}">
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" ><span th:text="${band}?'Modificar':'Guardar'"></span>  </button>
+                    <a class="btn btn-light" th:href="@{/}">Volver</a>
+                </form>
+      </div>
+    </div>
+</main>
 
-    <!-- <script>
-        function mostrarContrasena(){
-            var tipo = document.getElementById("password");
-            if(tipo.type == "password"){
-                tipo.type = "text";
-            }else{
-                tipo.type = "password";
-            }
-        }
-    </script> -->
+<script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.js}"
+		type="text/javascript"
+		src="webjars/bootstrap/5.0.0/js/bootstrap.min.js"></script>
+    
 </body>
-
 </html>

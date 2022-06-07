@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/webjars/bootstrap/5.0.0/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/6.1.0/css/all.css}" />
+    <title>Mostrar Cursos</title>
+</head>
+
+<body class="body-usuarios-cursos">
+    <div th:insert="/layout/header :: header"></div><br>
+
+    <div class="container">
+        <div class="alert-danger text-center" th:if="${formCourseErrorMessage}" th:text="${formCourseErrorMessage}">
+            Name Error
+        </div>
+        <section>
+            <div class="table-responsive">
+                <table class="table table-sm table-dark table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Precio ($)</th>
+                            <th scope="col">Fecha de Inicio</th>
+                            <th scope="col">Valoracion</th>
+                            <th scope="col">Duracion (Hrs)</th>
+                            <th scope="col">Docente</th>
+                            <th scope="col">Cupo</th>
+                            <th scope="col">Edicion</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="crs:${listacursos}" class="table-group-divider">
+                        <tr class="text-center">
+                            <td class="" th:text="${crs.id}"></td>
+                            <td class="black" th:text="${crs.nombre}"></td>
+                            <td class="black" th:text="${crs.descripcion}"></td>
+                            <td class="black" th:text="${crs.precio}"></td>
+                            <td class="black" th:text="${crs.fechaInicio}"></td>
+                            <td class="black" th:text="${crs.valoracion}"></td>
+                            <td class="black" th:text="${crs.duracion}"></td>
+                            <td class="black" th:text="${crs.docente}"></td>
+                            <td class="black" th:text="${crs.cupo}"></td>
+                            <td class="black">
+                                <!-- @{/editecourse/}+${crs.id} -->
+                                <a class="btn btn-warning fa fa-pencil" th:href="@{'/editarCurso/'+${crs.id}}"></a>
+                                <!-- <a class="btn btn-danger fa fa-trash" th:href="@{/deletecourse/}+${crs.id}"></a> -->
+                                <a class="link-eliminar" href="#"
+									th:onclick="'javascript:confirmarEliminar(\''+${crs.id}+'\');'">
+									<i class="btn btn-danger fa fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL ELIMINAR Usuario funciona con JS-->
+    <div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="eliminarModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarModalTitulo">Confirmar Eliminar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6>¿Seguro quiere eliminar este Curso?</h6>
+                </div>
+                <form>
+                    <input class="form-control" type="text" id="identificadorDeCurso" name="userIdHiddenInput" />
+
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" th:onclick="eliminarCurso()">Si, Borrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- script que envia datos -->
+    <script type="text/javascript">
+        var exampleModal = document.getElementById('modalEliminar')
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            // Button that triggered the modal
+            var button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            var recipient = button.getAttribute('data-bs-mail')
+            var recipient2 = button.getAttribute('data-bs-whatever')
+            // If necessary, you could initiate an AJAX request here
+            // and then do the updating in a callback.
+            //
+            // Update the modal's content.
+            var modalTitle = exampleModal.querySelector('.modal-title')
+            var modalBodyInput = exampleModal
+                .querySelector('.modal-body input')
+
+            modalTitle.textContent = 'Delete Course ' + recipient
+            modalBodyInput.value = recipient2
+        })
+    </script>
+
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" type="text/javascript"
+        src="webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.min.js}" type="text/javascript"
+        src="webjars/bootstrap/5.0.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        function confirmarEliminar(id) {
+            $("#identificadorDeCurso").val(id);
+            $('#modalEliminar').modal('show');
+        }
+
+        function eliminarCurso() {
+            var id = $("#identificadorDeCurso").val();
+            window.location = "/deletecourse/" + id;
+        }
+    </script>
+</body>
+
+</html>
