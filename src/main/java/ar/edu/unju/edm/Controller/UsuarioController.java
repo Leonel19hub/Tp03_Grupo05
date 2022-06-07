@@ -3,12 +3,11 @@ package ar.edu.unju.edm.Controller;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
-// import org.apache.commons.logging.Log;
-// import org.apache.juli.log;
-import org.apache.juli.logging.LogFactory;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,118 +17,95 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.unju.edm.model.Usuario;
 import ar.edu.unju.edm.services.IUsuarioService;
-import ar.edu.unju.edm.util.ListadoUsuario;
 
 @Controller
 public class UsuarioController {
 
-    // Constanres con mayusculas
-    private static final org.apache.juli.logging.Log MARCOS = LogFactory.getLog(UsuarioController.class);
-    // private static final Log MARCOS=LogFactory.getLog(UsuarioController.class);
-    // private static final Log MARCOS = (Log) LogFactory.getLog(UsuarioController.class);
-
-    @Autowired
-    Usuario nuevoUsuario;
-
-    @Autowired
-    IUsuarioService serviceUsuario;
+    private static final Log GRUPO05 = LogFactory.getLog(UsuarioController.class);
+	
+	@Autowired
+	Usuario nuevoUsuario;
+	
+	@Autowired
+	IUsuarioService usuarioService;
 
     @GetMapping("/otroUsuario")
-    public ModelAndView addUser(){
-
-        ModelAndView modelView = new ModelAndView("cargarUsuario");
-        // modelView.addObject("nuevoUsuario");
-
-        modelView.addObject("usuario", nuevoUsuario);
-
-        
-        modelView.addObject("band", false);
-        return modelView;
-
-    }
-
-    
+	public ModelAndView addUser() {
+		GRUPO05.info("ingresando al metodo: agregar Usuario");
+		ModelAndView modelView = new ModelAndView("cargarUsuario");
+		modelView.addObject("unUsuario", nuevoUsuario);
+		modelView.addObject("band",false);
+		
+		return modelView;
+	}
 
     @PostMapping("/guardarUsuario")
-    public String saveUser(@Valid @ModelAttribute ("usuario") Usuario userToSave, BindingResult resultado, Model model){
+	public String saveUser(@Valid @ModelAttribute("unUsuario") Usuario usuarioNuevo, BindingResult resultado, ModelMap model) {			
+			// VERIFICACION DEL NOMBRE Y DNI	
+		if (resultado.hasErrors()) {
+			GRUPO05.fatal("ERROR DE VALIDACION");			
+			model.addAttribute("unUsuario", usuarioNuevo);			
+			return "cargarUsuario";
+		}		
+		try {
+			usuarioService.guardarUsuario(usuarioNuevo);
+		} catch (Exception e) {			
+			model.addAttribute("formUsuarioErrorMessage", e.getMessage());
+			model.addAttribute("unUsuario", usuarioNuevo);
+			GRUPO05.error("saliendo del metodo: guardar usuario");
+			return "cargarUsuario";		
+		}		
+		
+		model.addAttribute("formUsuarioErrorMessage", "Usuario guardado correctamente");
+		model.addAttribute("unUsuario", nuevoUsuario);			
+		return "cargarUsuario";
+	}
 
-        // MARCOS.info("ingresando al metodo guardar Usuario: "+userToSave.getApellido());
-        if(resultado.hasErrors()){
-            MARCOS.fatal("Error de validadcion");
-            model.addAttribute("usuario", userToSave);
-            return "cargarUsuario";
-        }
-
-        try {
-            serviceUsuario.guardarUsuario(userToSave);
-        } catch (Exception e) {
-            MARCOS.error("no se pudo guardar usuario");
-        }
-
-        return "redirect:/otroUsuario";
-    }
-
-    @GetMapping("/mostrarUsuario")
-    public ModelAndView showTableUsers(){
-        
-        ModelAndView modelView = new ModelAndView("mostrarUsuarios");
-
-        modelView.addObject("listUser", serviceUsuario.mostrarUsuarios());
-        
-        return modelView;
-    }
-
-    @GetMapping("/editUser/{dni}")
-    public ModelAndView editarUsuario(@PathVariable (name = "dni") Long dni){
-
-        Usuario usuarioEncontrado = new Usuario();
-        // nuevoUsuario usuarioEncontrado;
-
-        // for(int i=0;i<listadoUsuario.getListado().size();i++){
-        //     if(listadoUsuario.getListado().get(i).getDni().equals(dni)){
-        //         usuarioEncontrado = listadoUsuario.getListado().get(i);
-        //     }
-        // }
-        
-        ModelAndView encontrado = new ModelAndView("cargarUsuario");
-
-        // encontrado.addObject("listUser", usuarioEncontrado);
-        encontrado.addObject("usuario", usuarioEncontrado);
-        encontrado.addObject("band", true);
-        
-        return encontrado;
-    }
-
-    @PostMapping("/modificarUsuario")
-    public String modificarUser(@Valid @ModelAttribute ("usuario") Usuario userToEdit, BindingResult resultado, Model model){
-
-        // MARCOS.info("ingresando al metodo guardar Usuario: "+userToEdit.getApellido());
-        if(resultado.hasErrors()){
-            // MARCOS.fatal("Error de validadcion");
-            model.addAttribute("usuario", userToEdit);
-            return "cargarUsuario";
-        }
-
-        
-        // listadoUsuario.getListado().add(userToEdit);
-        // MARCOS.error("tamaño del listado: "+listadoUsuario.getListado().size());
-        return "redirect:/mostrarUsuarios";
-    }
-
-    @GetMapping("/deleteUser/{dni}")
-    public String eliminarUsuario(@Valid @ModelAttribute Long dni){
-
-        try {
-            
-            serviceUsuario.eliminarUsuario(dni);
-        } catch (Exception e) {
-            MARCOS.error("no se pdo eliminar el usuario");
-        }
-        
-        return "redirect:/mostrarUsuario";
-    }
-
+    @GetMapping("/listadoUsuario")	
+	public ModelAndView showUser() {
+		ModelAndView modelView = new ModelAndView("mostrarUsuarios");		
+		modelView.addObject("listaUsuario", usuarioService.listarUsuarios());	
+		GRUPO05.info("ingresando al metodo: show User"+usuarioService.listarUsuarios().get(0).getApellido());
+		return modelView;
+	}
     
+    @GetMapping("/eliminarUsuario/{id}")
+	public String eliminar(@PathVariable Integer id, Model model) {	
+		try {
+		usuarioService.eliminarUsuario(id);
+		}catch(Exception e) {
+			GRUPO05.error("encontrando: usuario");
+			model.addAttribute("formUsuarioErrorMessage", e.getMessage());
+			return "redirect:/otroUsuario";			
+		}
+		return "redirect:/listadoUsuario";
+	}
 
+    @GetMapping("/editarUsuario/{dni}")
+	public ModelAndView ObtenerFormularioEditarUsuario(Model model, @PathVariable(name="dni") Integer dni) throws Exception {
+		//buscar usuario en el listado
+		Usuario usuarioEncontrado = new Usuario();
+		try {
+			usuarioEncontrado = usuarioService.buscarUsuario(dni);	
+			
+		} catch (Exception e) {
+			model.addAttribute("formUsuarioErrorMessage", e.getMessage());
+		}
+		ModelAndView modelView = new ModelAndView("cargarUsuario");
+		modelView.addObject("unUsuario", usuarioEncontrado);
+		GRUPO05.error("saliendo del metodo: ObtenerFormularioEditarUsuario"+ usuarioEncontrado.getDni());
+		modelView.addObject("band",true);		
+		return modelView;
+	}
 
+    @PostMapping("/editarUsuario")
+	public ModelAndView postEditarUsuario(@ModelAttribute("usuarioF") Usuario usuarioModificado) {		
+				
+		usuarioService.modificarUsuario(usuarioModificado);
+		ModelAndView modelView = new ModelAndView("mostrarUsuarios");		
+		modelView.addObject("listaUsuario", usuarioService.listarUsuarios());	
+		modelView.addObject("formUsuarioErrorMessage","Usuario Guardado Correctamente");
+		GRUPO05.info("Usuario modificado se ha guardado correctamente");
+		return modelView;
+	}
 }
