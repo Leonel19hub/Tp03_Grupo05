@@ -1,4 +1,4 @@
-/* @charset "ISO-8859-1"; */
+@charset "ISO-8859-1";
 
 /* Estilos del index */
 .album{
@@ -8,7 +8,6 @@
 
 .center{
     margin: 90px auto !important;
-
 }
 
 /* FOOTER */
@@ -25,5 +24,25 @@
 .footer-p{
     font-size: 20px;
     text-align: center;
-    
 }
+
+/* Estilos para vistas de Usuarios y Cursos */
+
+.body-usuarios-cursos {
+    background-image: url(../img/fondo.jpg);
+    background-size: cover;
+}
+
+.upload-User-Course {
+    background-color: rgba(0, 0, 0, 0.757);
+    padding: 30px;
+}
+
+.upload-User-Course label {
+    color: #fff;
+}
+/* para las filas de la tabla mostrar usuarios y cursos */
+.black {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    color: #fff;
+ }
