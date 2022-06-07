@@ -2,6 +2,8 @@ package ar.edu.unju.edm.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
 public class Usuario {
     
     private String nombre;
@@ -20,6 +23,7 @@ public class Usuario {
 	private String mail;
 	@Max (value = 99999999, message="DNI NO VALIDO: {x/x ∈ Z 1.000.000 < x < 99.999.999}")
 	@Min (value = 1000000, message="DNI NO VALIDO: {x/x ∈ Z 1.000.000 < x < 99.999.999}")
+	@Id
 	private Integer dni;
 	private Boolean estado;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
