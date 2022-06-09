@@ -76,7 +76,7 @@ public class CursoController {
 		ModelAndView modelView = new ModelAndView("mostrarCursos");
 
 		modelView.addObject("listacursos", cursoService.listarCursos());
-		GRUPO05.info("Ingresando al metodo showCourse "+cursoService.listarCursos().get(0).getNombre());
+		//GRUPO05.info("Ingresando al metodo showCourse "+cursoService.listarCursos().get(0).getNombre());
 
 		return modelView;
 	}
