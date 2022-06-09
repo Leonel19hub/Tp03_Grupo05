@@ -65,7 +65,7 @@ public class UsuarioController {
 	public ModelAndView showUser() {
 		ModelAndView modelView = new ModelAndView("mostrarUsuarios");		
 		modelView.addObject("listaUsuario", usuarioService.listarUsuarios());	
-		GRUPO05.info("ingresando al metodo: show User"+usuarioService.listarUsuarios().get(0).getApellido());
+		//GRUPO05.info("ingresando al metodo: show User"+usuarioService.listarUsuarios().get(0).getApellido());
 		return modelView;
 	}
     
