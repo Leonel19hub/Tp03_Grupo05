@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.unju.edm.Controller.CursoController;
 import ar.edu.unju.edm.model.Curso;
+import ar.edu.unju.edm.repository.CursoRepository;
 import ar.edu.unju.edm.services.ICursoService;
 import ar.edu.unju.edm.util.ListadoCursos;
 
@@ -21,60 +22,53 @@ public class ICursoServiceImp implements ICursoService{
     @Autowired
     ListadoCursos listCourses;
 
+    @Autowired
+    CursoRepository cursoRepository;
+
     @Override
     public void guardarCurso(Curso curso) {
-        
+
         curso.setEstado(true);
-        curso.setId(listCourses.getListadoCurso().size()+1);
-        listCourses.getListadoCurso().add(curso);
+        cursoRepository.save(curso);
         
     }
 
     @Override
-    public void eliminarCurso(Integer id) {
-        
-        for (int i = 0; i < listCourses.getListadoCurso().size(); i++) {
-            if (listCourses.getListadoCurso().get(i).getId().equals(id)) {
-                listCourses.getListadoCurso().get(i).setEstado(false);
-            }
-        }
+    public void eliminarCurso(Integer id) throws Exception{
+
+        Curso auxiliar = new Curso();
+        auxiliar = buscarCurso(id);
+        auxiliar.setEstado(false);
+        cursoRepository.save(auxiliar);
         
     }
 
     @Override
     public void modficarCurso(Curso curso) {
-    
-        for (int i = 0; i < listCourses.getListadoCurso().size(); i++) {			
-			if (listCourses.getListadoCurso().get(i).getId() == curso.getId()) {
-				GRUPO05.error("encontrando curso "+curso.getId());
-				listCourses.getListadoCurso().set(i, curso);			
-			}            
-        }
+    	GRUPO05.info("El curso con id: "+curso.getId()+"sera modificado proximamente");
+        cursoRepository.save(curso);
+        GRUPO05.info("El curso con id: "+curso.getId()+"se modifico");
         
     }
 
     @Override
     public List<Curso> listarCursos() {
         List<Curso> auxiliar = new ArrayList<>();
-        GRUPO05.info("Ingresando al metodo: Buscar Curso");
-        for (int i = 0; i < listCourses.getListadoCurso().size(); i++) {
-            GRUPO05.error("Recorriendo: Listado Cursos id: "+listCourses.getListadoCurso().get(i).getId());
+        auxiliar = (List<Curso>) cursoRepository.findAll();
+        List<Curso> auxiliar2 = new ArrayList<>();
+        for (int i = 0; i < auxiliar.size(); i++) {
 
-            if (listCourses.getListadoCurso().get(i).getEstado() == true) {
-                auxiliar.add(listCourses.getListadoCurso().get(i));
+            if (auxiliar.get(i).getEstado() == true) {
+                auxiliar2.add(auxiliar.get(i));
             }
         }
-        return auxiliar;
+        return auxiliar2;
     }
 
     @Override
-    public Curso buscarCurso(Integer id) {
+    public Curso buscarCurso(Integer id) throws Exception {
         Curso cursoEncontrado = new Curso();
-        for (int i = 0; i < listCourses.getListadoCurso().size(); i++) {
-            if (listCourses.getListadoCurso().get(i).getId().equals(id)) {
-                cursoEncontrado = listCourses.getListadoCurso().get(i);
-            }
-        }
+        cursoEncontrado = cursoRepository.findById(id).orElseThrow(()-> new Exception("Curso no encontrado"));
         return cursoEncontrado;
     }
     

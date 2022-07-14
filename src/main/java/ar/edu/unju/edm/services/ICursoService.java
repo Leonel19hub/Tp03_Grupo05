@@ -10,8 +10,8 @@ import ar.edu.unju.edm.model.Curso;
 public interface ICursoService {
     
     public void guardarCurso(Curso curso);
-    public void eliminarCurso(Integer id);
+    public void eliminarCurso(Integer id) throws Exception;
     public void modficarCurso(Curso curso);
     public List<Curso> listarCursos();
-    public Curso buscarCurso(Integer id);
+    public Curso buscarCurso(Integer id) throws Exception;
 }

@@ -22,7 +22,7 @@ import ar.edu.unju.edm.util.ListadoCursos;
 @Controller
 public class CursoController {
 
-	private static final Log GRUPO05 = LogFactory.getLog(UsuarioController.class);
+	private static final Log GRUPO05 = LogFactory.getLog(CursoController.class);
 	
 	@Autowired
 	Curso nuevoCurso;
@@ -37,25 +37,16 @@ public class CursoController {
 	@GetMapping({"/otroCurso"})	
 	public ModelAndView addCourse() {
 		
-		GRUPO05.info("Ingresando al metodo addUser");
+		GRUPO05.info("Ingresando al metodo agregar Curso");
 		ModelAndView modelView = new ModelAndView("cargarCurso");
 		modelView.addObject("unCurso", nuevoCurso);
 		modelView.addObject("band", false);
+		// modelView.addObject("idCurso", nuevoCurso.getId());
 		return modelView;
 	}
-		
-	// guardar cursos
+	
 	@PostMapping("/guardarCurso")
 	public String saveCourse(@Valid @ModelAttribute ("unCurso") Curso coursetosave, BindingResult result, ModelMap model) {
-		
-		// if(result.hasErrors()) {
-		// 	GRUPO05.fatal("ERROR DE VALIDACION");
-		// 	model.addAttribute("unCurso", coursetosave);
-		// 	return "cargarCurso";
-		// }
-		// coursetosave.setId(listadoCursos.getListadoCurso().size()+1);
-		// listadoCursos.getListadoCurso().add(coursetosave);
-		// return "redirect:/otroCurso";
 
 		if(result.hasErrors()) {
 			GRUPO05.fatal("ERROR DE VALIDACION");
@@ -64,11 +55,13 @@ public class CursoController {
 		}
 
 		try {
+			// model.addAttribute();
 			cursoService.guardarCurso(coursetosave);
 		} catch (Exception e) {
 			model.addAttribute("formCourseErrorMessage", e.getMessage());
 			model.addAttribute("unCurso", coursetosave);
-			GRUPO05.error("Saliendo del metodo: saveUser");
+			// model.addAttribute("idCurso", coursetosave.getId());
+			GRUPO05.error("Saliendo del metodo: saveCourse");
 			return "cargarCurso";
 		}
 
@@ -78,94 +71,48 @@ public class CursoController {
 		return "cargarCurso";
 	}
 		
-		// listar cursos
 	@GetMapping("/listarCursos")	
 	public ModelAndView showCourse() {
-		// ModelAndView modelView = new ModelAndView("mostrarCursos");
-		// modelView.addObject("listacursos", listadoCursos.getListadoCurso());
-		// return modelView;
 		ModelAndView modelView = new ModelAndView("mostrarCursos");
 
 		modelView.addObject("listacursos", cursoService.listarCursos());
-		GRUPO05.info("Ingresando al metodo showCourse "+cursoService.listarCursos().get(0).getNombre());
+		//GRUPO05.info("Ingresando al metodo showCourse "+cursoService.listarCursos().get(0).getNombre());
 
 		return modelView;
 	}
+	
+	Integer rescatarId;
 		
-		// modificar cursos
-		// @RequestMapping("/editecourse/{id}")
-		// public ModelAndView modCourse(@PathVariable(name="id") int id) { 
-		// 	Curso coursetomod = new Curso();
-		// 	for(int i=0 ;i <  listadoCursos.getListadoCurso().size(); i++ ) { 
-		// 		if(listadoCursos.getListadoCurso().get(i).getId() == id)
-		// 			coursetomod = listadoCursos.getListadoCurso().get(i);
-		// 	}
-			
-		// 	ModelAndView coursemod = new ModelAndView("cargarCurso");
-		//     coursemod.addObject("unCurso", coursetomod);
-		//     coursemod.addObject("band", "true");
-		//     return coursemod;
-		// }
-
-		@GetMapping("/editarCurso/{id}")
-		public ModelAndView getFormEditCourse(Model model, @PathVariable(name = "id") Integer id) throws Exception{
-			Curso cursoEncontrado = new Curso();
+	@GetMapping("/editarCurso/{id}")
+	public ModelAndView getFormEditCourse(Model model, @PathVariable(name = "id") Integer id) throws Exception{
+		Curso cursoEncontrado = new Curso();
+		try {
 			cursoEncontrado = cursoService.buscarCurso(id);
-			ModelAndView modelView = new ModelAndView("cargarCurso");
-			modelView.addObject("unCurso", cursoEncontrado);
-			GRUPO05.error("Saliendo del metodo: getFormEditCourse "+cursoEncontrado.getId());
-			
-			modelView.addObject("band", true);
-
-			return modelView;
+		} catch (Exception e) {
+			model.addAttribute("formCourseErrorMessage", e.getMessage());
 		}
-
-		//actualizar curso
-		// @PostMapping("/modificarCurso")
-		// public String savemodUser(@Valid @ModelAttribute ("unCurso") Curso cursoparamod, BindingResult result, Model model) {
+		ModelAndView modelView = new ModelAndView("cargarCurso");
+		modelView.addObject("unCurso", cursoEncontrado);
+		rescatarId=cursoEncontrado.getId();
+		GRUPO05.error("Saliendo del metodo: getFormEditCourse "+cursoEncontrado.getId());
 			
-		// 	if(result.hasErrors()) {
-		// 		GRUPO05.fatal("Error de validacion");
-		// 		model.addAttribute("unCurso", cursoparamod);
-		// 		model.addAttribute("band", true);
-		// 		return "cargarCurso";
-		// 	}
-		// 	for(int i=0 ;i <  listadoCursos.getListadoCurso().size(); i++ ) { 
-		// 		if(listadoCursos.getListadoCurso().get(i).getId() == cursoparamod.getId())
-		// 			listadoCursos.getListadoCurso().set(i, cursoparamod);
-		// 	}
-		
-		// 	return "redirect:/listarCursos";
-		// }
+		modelView.addObject("band", true);
+
+		return modelView;
+	}
 
 	@PostMapping("/editarCurso")
 	public ModelAndView postEditCourse(@ModelAttribute("curso") Curso cursoModificado){
-		ModelAndView modelView = new ModelAndView("mostrarCursos");
+		GRUPO05.info("El id del curso ha modiicar es: "+rescatarId);
+		cursoModificado.setId(rescatarId);
 		cursoService.modficarCurso(cursoModificado);
-
+		ModelAndView modelView = new ModelAndView("mostrarCursos");
 		modelView.addObject("listacursos", cursoService.listarCursos());
 		modelView.addObject("formCourseErrorMessage", "Curso guardado Correctamente");
 		GRUPO05.info("Curso modificado guardado correctamente");
 
 		return modelView;
 	}
-		
-		
-		// eliminar cursos
-		// @RequestMapping("/deletecourse/{id}")
-		// public String deleteCourse(@PathVariable(name="id") int id) {
-		// 	for(int i=0 ;i <  listadoCursos.getListadoCurso().size(); i++ ) {
-		// 		if(listadoCursos.getListadoCurso().get(i).getId() == id)
-		// 		{
-		// 			listadoCursos.getListadoCurso().remove(i);
-		// 			System.out.println("Tamaño del listado: " + listadoCursos.getListadoCurso().size());
-		// 		}
-					
-		// 	}
-		    	
-		//     return "redirect:/listarCursos";
-		// }
-	
 
 	@GetMapping("/deletecourse/{id}")
 	public String eliminar(@PathVariable Integer id, Model model){

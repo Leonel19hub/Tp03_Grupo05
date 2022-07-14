@@ -27,6 +27,7 @@
                 <form class="upload-User-Course" th:object="${unUsuario}"
                     th:action="${band}?@{/editarUsuario}:@{/guardarUsuario}" method="post">
                     <input type="hidden" class="form-control" th:if="${band}" th:field="*{contrasena}">
+                    <input type="hidden" class="form-control" th:if="${band}" th:field="*{dni}">
                     <input type="hidden" class="form-control" th:if="${band}" th:field="*{estado}">
                     <div class="row g-3">
                         <div class="col-sm-6">
@@ -50,7 +51,7 @@
                                 placeholder="Ingrese su contraseña" th:field="*{contrasena}">
                             <div class="alert alert-danger" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6" th:if="${band == false}">
                             <label for="dni" class="form-label">DNI</label>
                             <input type="number" class="form-control" id="dni" placeholder="12345678" th:field="*{dni}">
                             <div class="alert alert-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>

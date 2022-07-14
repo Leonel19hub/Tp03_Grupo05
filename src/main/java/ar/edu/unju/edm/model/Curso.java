@@ -2,7 +2,6 @@ package ar.edu.unju.edm.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,15 +18,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-public class Curso {
+public class Curso{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
     @NotEmpty(message = "El nombre no puede estar en vacio")
     private String nombre;
     @Size(min = 0 ,max = 200, message = "No debe superar los 200 caracteres")
     @NotEmpty(message = "Escriba una breve descripcion del curso")
-    @Column(name = "Descripcion")
     private String descripcion;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
@@ -45,7 +43,27 @@ public class Curso {
     private Boolean estado;
     
     public Curso() {
+
     }
+
+    // public Curso(Integer id, @NotEmpty(message = "El nombre no puede estar en vacio") String nombre,
+    //         @Size(min = 0, max = 200, message = "No debe superar los 200 caracteres") @NotEmpty(message = "Escriba una breve descripcion del curso") String descripcion,
+    //         LocalDate fechaInicio, @PositiveOrZero(message = "El precio debe ser mayor o igual a $0") int precio,
+    //         @Min(value = 0, message = "No puede ser menor que 0") @Max(value = 5, message = "No puede ser mayor que 5") int valoracion,
+    //         @Positive(message = "No puede tener 0 hrs") int duracion,
+    //         @NotEmpty(message = "Este campo no puede estar vacio") String docente,
+    //         @Positive(message = "Debe tener al menos 1 cupo") int cupo, Boolean estado) {
+    //     this.id = id;
+    //     this.nombre = nombre;
+    //     this.descripcion = descripcion;
+    //     this.fechaInicio = fechaInicio;
+    //     this.precio = precio;
+    //     this.valoracion = valoracion;
+    //     this.duracion = duracion;
+    //     this.docente = docente;
+    //     this.cupo = cupo;
+    //     this.estado = estado;
+    // }
 
     public Integer getId() {
         return id;
